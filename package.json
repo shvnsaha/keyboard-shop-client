@@ -12,12 +12,15 @@
     "prettier:fix": "npx prettier --write src"
   },
   "dependencies": {
+    "@headlessui/react": "^2.1.2",
     "@types/slick-carousel": "^1.6.40",
     "aos": "^3.0.0-beta.6",
+    "axios": "^1.7.2",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.4.1",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.24.1",
     "react-slick": "^0.30.2",
