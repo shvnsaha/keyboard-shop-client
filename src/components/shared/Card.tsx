@@ -1,17 +1,15 @@
 import { TbCurrencyTaka } from "react-icons/tb";
 import Ratings from "./Ratings";
+import { TProduct } from "../../types";
 
 
 
-const Card = () => {
-    // const { _id, name, image, price,
-    //     rating,
-    //     product_number,
-    //     brand_name, category,
-    // } = product;
+const Card = ({product}:{product:TProduct}) => {
+   
+    console.log(product);
 
     
-const rating = 5
+
 
     
     return (
@@ -36,8 +34,8 @@ const rating = 5
                   group-hover:scale-110 
                   transition
                 '
-                        // src={image}
-                        // alt='Room'
+                        src={product.image}
+                        alt='Room'
                     />
                     <div
                         className='
@@ -47,18 +45,16 @@ const rating = 5
               '
                     ></div>
                 </div>
-                <div className='font-semibold text-lg'>Name</div>
+                <div className='font-semibold text-lg'>{product.name}</div>
                 <div className='flex justify-between items-center'>
-                    <div className='font-semibold text-xs text-violet-900'>Category</div>
+                    <div className='font-semibold text-xs text-violet-900'>{product.brand}</div>
                     <div className='font-semibold text-xs text-violet-900'>Brand Name</div>
                 </div>
 
                 <div className='flex items-center text-xs text-gray-700 justify-between'>
                     <div className='flex items-center text-xs text-gray-700 gap-2'>
-                    <Ratings rating={rating}></Ratings>
-                        <span>{
-                            rating  ? <span>({rating})</span> : <></>
-                        }</span>
+                    <Ratings rating={product.rating}></Ratings>
+                    
                        
                     </div>
                    

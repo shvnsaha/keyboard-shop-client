@@ -35,7 +35,7 @@ const Navbar = () => {
         <li className='font-bold'><NavLink to={'/shop'}>Shop</NavLink></li>
         <li className='font-bold'><NavLink to={'/shop'}>Shop</NavLink></li>
         <li className='font-bold'><NavLink to={'/shop'}>Shop</NavLink></li>
-        <li className='font-bold'><NavLink to={'/shop'}>Shop</NavLink></li>
+        <li className='font-bold'><NavLink to={'/dashboard'}>Dashboard</NavLink></li>
     </>
 
     return (
