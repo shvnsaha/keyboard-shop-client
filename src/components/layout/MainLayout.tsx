@@ -11,7 +11,7 @@ const MainLayout = () => {
   return (
 
     <Provider store={store}>
-    <div className='max-w-[2520px]  mx-auto   px-2'>
+    <div className='max-w-[2520px]  mx-auto'>
    
     <div className='mb-16'>
         <Navbar></Navbar>
