@@ -62,6 +62,7 @@ const Card = ({product}:{product:TProduct}) => {
                    
 
                 </div>
+                
                 <div className='flex justify-between items-center'>
                     <div className='font-semibold flex items-center text-orange-800'><TbCurrencyTaka size={20}></TbCurrencyTaka> 20</div>
             </div>
