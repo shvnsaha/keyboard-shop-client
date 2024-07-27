@@ -3,6 +3,7 @@ import MainLayout from "../components/layout/MainLayout";
 import Home from "../pages/Home";
 import Dashboard from "../pages/Dashboard";
 import ProductDetails from "../pages/ProductDetails";
+import Cart from "../pages/Cart";
 
 
 const router = createBrowserRouter([
@@ -15,8 +16,24 @@ const router = createBrowserRouter([
         element:<Home></Home>
        },
        {
+        path:'/product',
+        element: <p>product</p>
+       },
+       {
+        path:'/about-us',
+        element: <p>about us</p>
+       },
+       {
+        path:'/contact-us',
+        element: <p>contact us</p>
+       },
+       {
         path: "/product/:id",
         element: <ProductDetails />,
+      },
+       {
+        path: "/cart",
+        element: <Cart />,
       },
        {
         path:'/dashboard',

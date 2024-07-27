@@ -1,19 +1,53 @@
 import { useParams } from "react-router-dom";
 import { useGetSingleProductQuery } from "../redux/features/product/productApi/getProducts";
 import Ratings from "../components/shared/Ratings";
+import Swal from "sweetalert2";
+import { useAppDispatch, useAppSelector } from "../redux/hook";
+import { addToCart, selectCartItems } from "../redux/features/cart/cartSlice";
 
 
 
 
 const ProductDetails = () => {
+    const dispatch = useAppDispatch();
 
     const { id } = useParams();
     const { data, isLoading } = useGetSingleProductQuery(id);
+
+    // const cartItems = useAppSelector(selectCartItems);
+    // console.log(cartItems);
 
     if(isLoading)
         return <p>Loading....</p>
 
     const {name,price,brand,available_quantity,rating,description} = data.data
+
+
+    const handleAddToCart = async () => {
+        if (!available_quantity) {
+          Swal.fire({
+            title: "This product has been stocked out!!",
+            text: "",
+            icon: "error",
+          });
+          return;
+        }
+        
+        try {
+          dispatch(addToCart(data.data));
+          Swal.fire({
+            icon: "success",
+            title: `${data.data.title} is added in your cart list.`,
+            text: ``,
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "You've can't add this product to cart more than it's available quantity!",
+          });
+        }
+      };
 
     return (
         <>
@@ -62,7 +96,7 @@ const ProductDetails = () => {
                             <p>Available Quantity : {available_quantity}</p>
                             <p>Price: {price} </p>
                             <div>
-                                <button className='btn btn-outline bg-yellow-500'>Add To Cart</button>
+                                <button className='btn btn-outline bg-yellow-500' onClick={handleAddToCart}>Add To Cart</button>
                             </div>
 
                          

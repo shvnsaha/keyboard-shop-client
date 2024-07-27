@@ -1,9 +1,16 @@
 import { Outlet } from "react-router-dom"
 import Navbar from "../shared/Navbar"
 import Footer from "../shared/Footer"
+import { Provider } from "react-redux"
+import { store } from "../../redux/store"
 
 const MainLayout = () => {
+
+  
+
   return (
+
+    <Provider store={store}>
     <div className='max-w-[2520px]  mx-auto   px-2'>
    
     <div className='mb-16'>
@@ -16,6 +23,7 @@ const MainLayout = () => {
     <Footer></Footer>
 
 </div >
+</Provider>
   )
 }
 
