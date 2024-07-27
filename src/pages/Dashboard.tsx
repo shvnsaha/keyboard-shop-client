@@ -17,7 +17,8 @@ const Dashboard = () => {
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
-  const { data, isLoading } = useGetProductsQuery(undefined);
+  const params = `page=1&limit=10`
+  const { data, isLoading } = useGetProductsQuery(params);
 
   if (isLoading) {
     <p>loadiii....</p>;
