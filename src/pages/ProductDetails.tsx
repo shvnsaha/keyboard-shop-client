@@ -3,14 +3,17 @@ import { useGetSingleProductQuery } from "../redux/features/product/productApi/g
 import Ratings from "../components/shared/Ratings";
 import Swal from "sweetalert2";
 import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { addToCart, selectCartItems } from "../redux/features/cart/cartSlice";
+import { addToCart, cartCount, selectCartItems } from "../redux/features/cart/cartSlice";
+import ScrollTop from "../hooks/useScrollToTop";
+import Loader from "../components/shared/Loader";
 
 
 
 
 const ProductDetails = () => {
-    const dispatch = useAppDispatch();
 
+    ScrollTop()
+    const dispatch = useAppDispatch();
     const { id } = useParams();
     const { data, isLoading } = useGetSingleProductQuery(id);
 
@@ -18,7 +21,7 @@ const ProductDetails = () => {
     // console.log(cartItems);
 
     if(isLoading)
-        return <p>Loading....</p>
+        return <Loader></Loader>
 
     const {name,price,brand,available_quantity,rating,description} = data.data
 
@@ -26,7 +29,7 @@ const ProductDetails = () => {
     const handleAddToCart = async () => {
         if (!available_quantity) {
           Swal.fire({
-            title: "This product has been stocked out!!",
+            title: `${data.data.name} has been stocked out!`,
             text: "",
             icon: "error",
           });
@@ -34,10 +37,11 @@ const ProductDetails = () => {
         }
         
         try {
+          dispatch(cartCount(data.data));
           dispatch(addToCart(data.data));
           Swal.fire({
             icon: "success",
-            title: `${data.data.title} is added in your cart list.`,
+            title: `${data.data.name} is added in cart`,
             text: ``,
           });
         } catch (error) {
@@ -50,8 +54,8 @@ const ProductDetails = () => {
       };
 
     return (
-        <>
-            <div className=" bg-white">
+        <div className="p-16">
+            <div className="bg-white">
                 <div className="p-6 lg:max-w-7xl max-w-4xl mx-auto">
                     <div className="grid items-start grid-cols-1 lg:grid-cols-5 gap-12 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-6">
                         <div className="lg:col-span-3 w-full lg:sticky top-0 text-center">
@@ -105,11 +109,8 @@ const ProductDetails = () => {
 
                  
                 </div>
-
-
             </div>
-
-        </>
+        </div>
 
 
     );

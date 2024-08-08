@@ -1,12 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type TCartItem = {
+export type TCartItem = {
   _id: string;
   name: string;
   price: number;
   quantity: number;
   image: string;
- 
 };
 
 type CartState = {
@@ -36,13 +35,25 @@ const cartSlice = createSlice({
         (item) => item._id === action.payload._id
       );
       if (existingItem) {
-        if (existingItem.quantity === action.payload.quantity) {
-          throw new Error("Nope");
-        }
-
         existingItem.quantity += 1;
       } else {
         state.items.push(orderPayload);
+      }
+    },
+    increaseCart: (state, action: PayloadAction<TCartItem>) => {
+      const existingItem = state.items.find(
+        (item) => item._id === action.payload._id
+      );
+      if (existingItem) {
+        existingItem.quantity += 1;
+      }
+    },
+    decreaseCart: (state, action: PayloadAction<TCartItem>) => {
+      const existingItem = state.items.find(
+        (item) => item._id === action.payload._id
+      );
+      if (existingItem) {
+        existingItem.quantity -= 1;
       }
     },
 
@@ -53,7 +64,7 @@ const cartSlice = createSlice({
 
     cartCount: (state, action) => {
       const existingItem = state.items.find(
-        (item) => item._id === action.payload
+        (item) => item._id === action.payload._id
       );
 
       if (existingItem) {
@@ -63,9 +74,13 @@ const cartSlice = createSlice({
         state.count = state.count + 1;
       }
     },
+
+    deleteItem: (state, action: PayloadAction<TCartItem>) => {
+      state.items = state.items.filter((item) => item._id !== action.payload._id);
+    },
   },
 });
 
-export const { addToCart, clearCart, cartCount } = cartSlice.actions;
+export const { addToCart, clearCart, cartCount, increaseCart, decreaseCart, deleteItem } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -11,6 +11,7 @@ import UpdateProductModal from "../components/modal/UpdateProductModal";
 import { useUpdateProductMutation } from "../redux/features/product/productApi/updateProduct";
 import { IoAddCircleSharp } from "react-icons/io5";
 import { TProduct } from "../types";
+import Loader from "../components/shared/Loader";
 
 const Dashboard = () => {
   const [addProduct] = useAddProductMutation();
@@ -19,20 +20,19 @@ const Dashboard = () => {
 
   const params = `page=1&limit=10`
   const { data, isLoading } = useGetProductsQuery(params);
+  
 
-  if (isLoading) {
-    <p>loadiii....</p>;
-  }
+
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  const [product, setProduct] = useState("");
+  const [product, setProduct] = useState(undefined);
   const [loading, setLoading] = useState(false);
   const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
   function closeModal() {
     setIsOpen(false);
     setIsOpen2(false);
-    setProduct("");
+    // setProduct("");
   }
 
   const handleImageChange = (image: File) => {
@@ -96,12 +96,12 @@ const Dashboard = () => {
     });
   };
 
-  const openModal = (item) => {
+  const openModal = (item:any) => {
     setIsOpen2(true);
     setProduct(item);
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.product_name.value;
@@ -124,15 +124,17 @@ const Dashboard = () => {
       image: image_new,
     };
 
-    const id = product._id;
+    const id = product;
     try {
       setLoading(true);
-      await updateProduct({ id, data });
+      const res =  await updateProduct({ id, data });
+     
       setUploadButtonText("Uploaded");
-      toast.success("Product updated");
-    } catch (err) {
-      console.log(err);
-      toast.error(err.message);
+      if (res) {
+        toast.success(res?.data?.message);
+      }
+    } catch (err:any) {
+      toast.error(err);
     } finally {
       setLoading(false);
     }
@@ -192,12 +194,14 @@ const Dashboard = () => {
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-sm uppercase font-normal"
                     >
                       Delete
-                    </th>
+                    </th> 
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.data.map((item:TProduct, index) => (
-                    <tr className="text-center">
+                  {
+                    isLoading? <Loader></Loader> :
+                  data?.data?.result.map((item:TProduct, index:number) => (
+                    <tr key={item?._id} className="text-center">
                       <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
                         <p className="text-gray-900 whitespace-no-wrap">
                           {index + 1}
@@ -247,7 +251,8 @@ const Dashboard = () => {
                       </td>
                    
                     </tr>
-                  ))}
+                  ))
+                  }
                 </tbody>
               </table>
             </div>

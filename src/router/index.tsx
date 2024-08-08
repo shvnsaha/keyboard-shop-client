@@ -5,6 +5,8 @@ import Dashboard from "../pages/Dashboard";
 import ProductDetails from "../pages/ProductDetails";
 import Cart from "../pages/Cart";
 import Product from "../pages/Product";
+import Checkout from "../pages/Checkout ";
+import ContactUs from "../pages/ContactUs";
 
 
 const router = createBrowserRouter([
@@ -26,7 +28,7 @@ const router = createBrowserRouter([
        },
        {
         path:'/contact-us',
-        element: <p>contact us</p>
+        element: <ContactUs/>
        },
        {
         path: "/product/:id",
@@ -39,6 +41,10 @@ const router = createBrowserRouter([
        {
         path:'/dashboard',
         element: <Dashboard></Dashboard>
+      },
+       {
+        path:'/checkout',
+        element: <Checkout/>
       }
       ]
     },

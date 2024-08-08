@@ -1,7 +1,7 @@
 
 
 import { baseApi } from "../../../api/baseApi";
-const productsApi = baseApi.injectEndpoints({
+const productApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     deleteProduct: builder.mutation({
       query: (id) => ({
@@ -13,4 +13,4 @@ const productsApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useDeleteProductMutation } = productsApi;
+export const { useDeleteProductMutation } = productApi;

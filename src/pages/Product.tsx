@@ -1,32 +1,33 @@
 import { useState } from "react";
 import Slider from "react-slider";
 import { useGetProductsQuery } from "../redux/features/product/productApi/getProducts";
+import CardSkeleton from "../components/shared/CardSkeleton";
+import Card from "../components/shared/Card";
+import { TProduct } from "../types";
+import { Helmet } from "react-helmet-async";
 
 const Product = () => {
-  const [searchTerm,setSearchTerm] = useState('') 
-  const [sortPrice,setSortPrice] = useState('')
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
   const [values, setValues] = useState([0, 1000]);
-  const defaultValues = [0, 1000];
+  const [page, setPage] = useState(1);
+  const limit = 3;
 
-  const handleChange = (newValues) => {
+  const handleChange = (newValues: number[]) => {
     setValues(newValues);
   };
 
- 
-  let page = 1;
-  let limit = 10;
-  
- 
-const params = `searchTerm=${searchTerm}&page=${page}&limit=${limit}&sort=${sortPrice}&min=${values[0]}&max=${values[1]}`
-const { data, isLoading } = useGetProductsQuery(params);
+  const params = `searchTerm=${searchTerm}&page=${page}&limit=${limit}&sort=${sortPrice}&min=${values[0]}&max=${values[1]}`;
+  const { data, isLoading, isSuccess } = useGetProductsQuery(params);
 
-if(isLoading){
-    return <p>loading</p>
-}
+  const Pginetionclass =
+    "join-item  btn text-lg font-bold hover:bg-green-600 hover:text-white font-Montserrat bg-green-200";
 
-console.log(data);
   return (
     <div className="px-4">
+      <Helmet>
+        <title>E-Shop | Buy Your Products</title>
+      </Helmet>
       {/* banner */}
       <div
         className="banner h-52 bg-blend-overlay rounded-lg"
@@ -50,7 +51,7 @@ console.log(data);
             type="text"
             placeholder="Search Here"
             className="md:w-[30%] w-40 h-[50px] p-3 rounded-full border-2 border-[#DEDEDE]"
-            onChange={(e)=>setSearchTerm(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
       </div>
@@ -70,8 +71,8 @@ console.log(data);
                 <label className="text-lg font-semibold">Sort:</label>
                 <select
                   className=" select max-w-xs focus:outline-none text-base font-medium border-green-700   select-bordered w-full "
-                   onChange={(e)=>setSortPrice(e.target.value)}
-                   value={sortPrice}
+                  onChange={(e) => setSortPrice(e.target.value)}
+                  value={sortPrice}
                 >
                   <option value="">Choose One</option>
                   <option value="price">Low to High</option>
@@ -92,9 +93,7 @@ console.log(data);
                 max={1000}
                 className="w-52 h-0.5 bg-gray-200 rounded-lg relative"
                 thumbClassName="bg-blue-500 w-2 h-2 top-[-1px] rounded-full cursor-pointer absolute"
-                trackClassName={`bg-white ${
-                  values[0] >= defaultValues[0] ? "bg-red-200" : "bg-white"
-                }  h-[5px] rounded-md`}
+                trackClassName={`bg-red-300 h-[5px] rounded-md`}
                 ariaLabel={["Min Price", "Max Price"]}
                 ariaValuetext={(state) => `Value ${state.valueNow}`}
                 pearling
@@ -104,6 +103,69 @@ console.log(data);
           </div>
         </div>
       </div>
+
+      {isLoading ? (
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 my-10"
+          data-aos="fade-down"
+          data-aos-delay="400"
+        >
+          {Array.from({ length: 10 }, (_, index: number) => (
+            <CardSkeleton key={index} />
+          ))}
+        </div>
+      ) : data?.data?.result.length > 0 ? (
+        <div
+          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 my-10"
+          data-aos="fade-down"
+          data-aos-delay="400"
+        >
+          {data?.data?.result.map((product: TProduct) => (
+            <Card key={product._id} product={product}></Card>
+          ))}
+        </div>
+      ) : (
+        <div className="col-span-3 h-96 flex my-20 justify-center items-center">
+          <p>No Product Found</p>
+        </div>
+      )}
+
+      {isSuccess && (
+        <div className="paginetion flex mb-20">
+          <div className="join border-green-300 border mx-auto ">
+            <button
+              onClick={() => setPage((old) => old - 1)}
+              disabled={1 === page}
+              className={`${Pginetionclass} disabled:bg-green-100`}
+            >
+              «
+            </button>
+            {[...Array(Math.ceil(data?.data?.total / limit)).keys()].map(
+              (ele) => {
+                return (
+                  <button
+                    onClick={() => setPage(ele + 1)}
+                    key={ele + 1}
+                    className={`${Pginetionclass} ${ele + 1 === page ? "bg-yellow-300" : ""
+                      } `}
+                  >
+                    {ele + 1}
+                  </button>
+                );
+              }
+            )}
+
+            <button
+              onClick={() => setPage((old) => old + 1)}
+              disabled={page === Math.ceil(data?.data?.total / limit)}
+              className={`${Pginetionclass} disabled:bg-green-100`}
+            >
+              »
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

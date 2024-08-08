@@ -6,14 +6,10 @@ import { FaArrowTrendUp } from "react-icons/fa6";
 
 
 
-const Card = ({product}:{product:TProduct}) => {
-   
-    console.log(product);
-
-    
+const Card = ({ product }: { product: TProduct }) => {
 
 
-    
+
     return (
 
 
@@ -55,20 +51,20 @@ const Card = ({product}:{product:TProduct}) => {
 
                 <div className='flex items-center text-xs text-gray-700 justify-between'>
                     <div className='flex items-center text-xs text-gray-700 gap-2'>
-                    <Ratings rating={product.rating}></Ratings>
-                    
-                       
+                        <Ratings rating={product.rating}></Ratings>
+
+
                     </div>
-                   
+
 
                 </div>
-                
+
                 <div className='flex justify-between items-center'>
                     <div className='font-semibold flex items-center text-orange-800'><TbCurrencyTaka size={20}></TbCurrencyTaka> 20</div>
-            </div>
+                </div>
 
-            <Link to={`/product/${product._id}`} className='btn btn-outline'>View Details <FaArrowTrendUp ></FaArrowTrendUp> </Link>
-        </div>
+                <Link to={`/product/${product._id}`} className='btn btn-outline'>View Details <FaArrowTrendUp ></FaArrowTrendUp> </Link>
+            </div>
 
         </div>
 

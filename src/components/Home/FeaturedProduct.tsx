@@ -31,7 +31,7 @@ const FeaturedProduct = () => {
         data-aos="fade-down"
         data-aos-delay="400"
       >
-        {data?.data?.map((product: TProduct) => (
+        {data?.data?.result.map((product: TProduct) => (
           <Card key={product._id} product={product}></Card>
         ))}
       </div>
