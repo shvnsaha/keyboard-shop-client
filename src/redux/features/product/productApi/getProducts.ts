@@ -13,7 +13,7 @@ const productApi = baseApi.injectEndpoints({
             query: (id) => ({
               url: `/products/${id}`,
               method: "GET",
-            }),
+            }),   
           }),
         })
     })

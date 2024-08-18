@@ -7,12 +7,16 @@ import Cart from "../pages/Cart";
 import Product from "../pages/Product";
 import Checkout from "../pages/Checkout ";
 import ContactUs from "../pages/ContactUs";
+import AboutUs from "../pages/AboutUs";
+import PaymentSuccess from "../pages/PaymentSuccess";
+import ErrorPage from "../pages/ErrorPage";
 
 
 const router = createBrowserRouter([
     {
       path: "/",
       element: <MainLayout></MainLayout>,
+      errorElement:<ErrorPage></ErrorPage>,
       children:[
        {
         path: '/',
@@ -24,7 +28,7 @@ const router = createBrowserRouter([
        },
        {
         path:'/about-us',
-        element: <p>about us</p>
+        element: <AboutUs></AboutUs>
        },
        {
         path:'/contact-us',
@@ -45,6 +49,10 @@ const router = createBrowserRouter([
        {
         path:'/checkout',
         element: <Checkout/>
+      },
+      {
+        path: '/payment',
+        element: <PaymentSuccess></PaymentSuccess>
       }
       ]
     },

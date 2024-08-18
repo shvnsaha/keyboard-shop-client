@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import AddProductModal from "../components/modal/AddProductModal";
 import toast from "react-hot-toast";
-import { imageUpload } from "../utils/imageUpload";
+// import { imageUpload } from "../utils/imageUpload";
 import { useAddProductMutation } from "../redux/features/product/productApi/addProduct";
 import { useGetProductsQuery } from "../redux/features/product/productApi/getProducts";
 import Swal from "sweetalert2";
@@ -12,22 +13,21 @@ import { useUpdateProductMutation } from "../redux/features/product/productApi/u
 import { IoAddCircleSharp } from "react-icons/io5";
 import { TProduct } from "../types";
 import Loader from "../components/shared/Loader";
+import { Helmet } from "react-helmet-async";
 
 const Dashboard = () => {
   const [addProduct] = useAddProductMutation();
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
 
-  const params = `page=1&limit=10`
+  const params = `page=1&limit=10`;
   const { data, isLoading } = useGetProductsQuery(params);
-  
-
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
-  const [product, setProduct] = useState(undefined);
+  const [product, setProduct] = useState<TProduct | null>(null);
   const [loading, setLoading] = useState(false);
-  const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
+  // const [uploadButtonText, setUploadButtonText] = useState("Upload Image");
 
   function closeModal() {
     setIsOpen(false);
@@ -35,9 +35,22 @@ const Dashboard = () => {
     // setProduct("");
   }
 
-  const handleImageChange = (image: File) => {
-    setUploadButtonText(image.name);
-  };
+  // const handleImageChange = (image: File) => {
+  //   setUploadButtonText(image.name);
+  // };
+
+  // const handleImageChange = (file: File | null) => {
+  //   if (file) {
+  //     setUploadButtonText(file.name); // Update the button text to the selected file name
+  //   } else {
+  //     setUploadButtonText("Upload Image");
+  //   }
+  // };
+
+  // const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const file = event.target.files?.[0] || null;
+  //   handleImageChange(file);
+  // };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -48,8 +61,9 @@ const Dashboard = () => {
     const description = form.description.value;
     const available_quantity = Number(form.available_quantity.value);
     const rating = Number(form.rating.value);
-    const image = form.image.files[0];
-    const image_url = await imageUpload(image);
+    const image = form.image.value
+    // const image = form.image.files[0];
+    // const image_url = await imageUpload(image);
     const ProductData = {
       name,
       brand,
@@ -57,7 +71,8 @@ const Dashboard = () => {
       description,
       available_quantity,
       rating,
-      image: image_url?.data?.display_url,
+      image
+      // image: image_url?.data?.display_url,
     };
 
     try {
@@ -96,12 +111,12 @@ const Dashboard = () => {
     });
   };
 
-  const openModal = (item:any) => {
+  const openModal = (item: TProduct) => {
     setIsOpen2(true);
     setProduct(item);
   };
 
-  const handleUpdate = async (e:React.FormEvent<HTMLFormElement>) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const name = form.product_name.value;
@@ -110,9 +125,10 @@ const Dashboard = () => {
     const description = form.description.value;
     const available_quantity = Number(form.available_quantity.value);
     const rating = Number(form.rating.value);
-    const image = form.image.files[0];
-    const image_url = image ? await imageUpload(image) : "";
-    const image_new = image_url ? image_url?.data?.display_url : product.image;
+    const image = form.image.value
+    // const image = form.image.files[0];
+    // const image_url = image ? await imageUpload(image) : "";
+    // const image_new = image_url ? image_url?.data?.display_url : product?.image;
 
     const data = {
       name,
@@ -121,30 +137,37 @@ const Dashboard = () => {
       description,
       available_quantity,
       rating,
-      image: image_new,
+      image
+      // image: image_new,
     };
 
-    const id = product;
+    const id = product?._id;
     try {
       setLoading(true);
-      const res =  await updateProduct({ id, data });
-     
-      setUploadButtonText("Uploaded");
+      const res = await updateProduct({ id, data });
+
+      // setUploadButtonText("Uploaded");
       if (res) {
         toast.success(res?.data?.message);
       }
-    } catch (err:any) {
+    } catch (err: any) {
       toast.error(err);
     } finally {
       setLoading(false);
     }
   };
 
+  if(isLoading)
+    return <Loader></Loader>
+
   return (
-    <div className="p-10 bg-gray-50 min-h-screen"> 
-        <button onClick={() => setIsOpen(true)} className="absolute right-52">
-          <IoAddCircleSharp size={40} />
-        </button>
+    <div className="p-10 bg-gray-100 min-h-screen">
+      <Helmet>
+            <title>E-Shop | Dashboard</title>
+            </Helmet>
+      <button onClick={() => setIsOpen(true)} className="absolute right-52">
+        <IoAddCircleSharp size={40} />
+      </button>
       <div className="container mx-auto px-4 sm:px-8">
         <div className="py-8">
           <div className="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -182,7 +205,14 @@ const Dashboard = () => {
                     >
                       Price
                     </th>
-                   
+
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800   text-sm uppercase font-normal"
+                    >
+                      Available Quantity
+                    </th>
+
                     <th
                       scope="col"
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800   text-sm uppercase font-normal"
@@ -194,64 +224,68 @@ const Dashboard = () => {
                       className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-sm uppercase font-normal"
                     >
                       Delete
-                    </th> 
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {
-                    isLoading? <Loader></Loader> :
-                  data?.data?.result.map((item:TProduct, index:number) => (
-                    <tr key={item?._id} className="text-center">
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {index + 1}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <div className="flex justify-center items-center">
-                          <div className="avatar">
-                            <div className="w-12 rounded-xl">
-                              <img src={item?.image} />
+                  {  
+                    data?.data?.result.map((item: TProduct, index: number) => (
+                      <tr key={item?._id} className="text-center">
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm ">
+                          <p className="text-gray-900 whitespace-no-wrap">
+                            {index + 1}
+                          </p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <div className="flex justify-center items-center">
+                            <div className="avatar">
+                              <div className="w-12 rounded-xl">
+                                <img src={item?.image} />
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </td>
+                        </td>
 
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {item?.name}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {item?.brand}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <p className="text-gray-900 whitespace-no-wrap">
-                          {item?.price}
-                        </p>
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <button
-                          onClick={() => openModal(item)}
-                          className="relative text-red cursor-pointer"
-                        >
-                          <MdOutlineSystemUpdateAlt size={20} />
-                        </button>
-                      </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">
+                            {item?.name}
+                          </p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">
+                            {item?.brand}
+                          </p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">
+                            {item?.price}
+                          </p>
+                        </td>
 
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        <button
-                          onClick={() => handleDelete(item?._id)}
-                          className="relative text-red cursor-pointer"
-                        >
-                          <MdDeleteOutline size={20}></MdDeleteOutline>
-                        </button>
-                      </td>
-                   
-                    </tr>
-                  ))
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <p className="text-gray-900 whitespace-no-wrap">
+                            {item?.available_quantity}
+                          </p>
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <button
+                            onClick={() => openModal(item)}
+                            className="relative text-red cursor-pointer"
+                          >
+                            <MdOutlineSystemUpdateAlt size={20} />
+                          </button>
+                        </td>
+
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          <button
+                            onClick={() => handleDelete(item?._id)}
+                            className="relative text-red cursor-pointer"
+                          >
+                            <MdDeleteOutline size={20}></MdDeleteOutline>
+                          </button>
+                        </td>
+                      </tr>
+                    ))
                   }
                 </tbody>
               </table>
@@ -266,8 +300,8 @@ const Dashboard = () => {
           isOpen={isOpen}
           handleSubmit={handleSubmit}
           loading={loading}
-          uploadButtonText={uploadButtonText}
-          handleImageChange={handleImageChange}
+          // uploadButtonText={uploadButtonText}
+          // handleFileChange={handleFileChange}
         ></AddProductModal>
       }
       {
@@ -277,8 +311,8 @@ const Dashboard = () => {
           product={product}
           handleUpdate={handleUpdate}
           loading={loading}
-          uploadButtonText={uploadButtonText}
-          handleImageChange={handleImageChange}
+          // uploadButtonText={uploadButtonText}
+          // handleFileChange={handleFileChange}
         ></UpdateProductModal>
       }
     </div>

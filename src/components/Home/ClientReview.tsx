@@ -39,10 +39,10 @@ const ClientReview = () => {
     ]
     return (
         <div className="">
-            <div className="text-redFood text-3xl md:text-5xl text-center font-medium">
+            <div className="text-redFood text-3xl text-center font-bold">
                 What Our Clients Say
             </div>
-            <div className="text-stone-600 my-4 md:font-medium text-center md:w-2/3 mx-5 md:mx-auto">
+            <div className="text-stone-600 my-3 md:font-medium text-center md:w-2/3 mx-5 md:mx-auto">
                 We place huge value on our relationships and have seen the benefit they
                 bring to our community. Feedback from our members is vital in helping us
                 grow and improve.
@@ -77,7 +77,7 @@ const ClientReview = () => {
                 {
                     client_reviews.map((item) => (
                         <SwiperSlide key={item?.id}>
-                            <div className="overflow-hidden p-10 bg-gray-100 rounded-lg">
+                            <div className="overflow-hidden p-10  bg-white rounded-lg">
                                 <div className="flex flex-col items-center p-4 justify-center text-center">
                                     <img
                                         src={item?.profile_image_url}

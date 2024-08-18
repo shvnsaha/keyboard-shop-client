@@ -5,7 +5,7 @@ import { BiSupport } from 'react-icons/bi'
 
 const Services = () => {
   return (
-    <div className='px-6 overflow-hidden'>
+    <div className='overflow-hidden'>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
       <div
         data-aos="fade-left"

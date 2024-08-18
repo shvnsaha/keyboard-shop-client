@@ -1,21 +1,16 @@
-import { Dialog, Transition } from '@headlessui/react'
-import { Fragment } from 'react'
-import { TbFidgetSpinner } from 'react-icons/tb'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Dialog, Transition } from "@headlessui/react";
+import { Fragment } from "react";
+import { TbFidgetSpinner } from "react-icons/tb";
 
 const AddProductModal = ({
   closeModal,
   isOpen,
   handleSubmit,
   loading,
-  uploadButtonText,
-  handleImageChange,
-}:any) => {
-
-
-
-
-
-
+  // uploadButtonText,
+  // handleFileChange,
+}: any) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -47,10 +42,13 @@ const AddProductModal = ({
                   as="h3"
                   className="text-lg font-medium leading-6 text-gray-900"
                 >
-                 <p className='text-center font-semibold text-3xl'> Add a New Product</p>
+                  <p className="text-center font-semibold text-3xl">
+                    {" "}
+                    Add a New Product
+                  </p>
                 </Dialog.Title>
 
-                <div className='mt-10'>
+                <div className="mt-10">
                   <form onSubmit={handleSubmit}>
                     <div className="space-y-6">
                       <div className="space-y-1 text-sm">
@@ -109,14 +107,23 @@ const AddProductModal = ({
                         />
                       </div>
 
-                      <div className=" p-4 bg-white w-full  m-auto rounded-lg">
+                      <div className="space-y-1 text-sm">
+                        <input
+                          className="w-full px-4 py-3 text-gray-800 border border-rose-300 focus:outline-rose-500 rounded-md "
+                          name="image"
+                          id="image"
+                          type="text"
+                          placeholder="Image Url"
+                          required
+                        />
+                      </div>
+
+                      {/* <div className=" p-4 bg-white w-full  m-auto rounded-lg">
                         <div className="file_upload px-5 py-3 relative border-4 border-dotted border-gray-300 rounded-lg">
                           <div className="flex flex-col w-max mx-auto text-center">
                             <label>
                               <input
-                                onChange={(e) =>
-                                  handleImageChange(e.target.files[0])
-                                }
+                                onChange={handleFileChange}
                                 className="text-sm cursor-pointer w-36 hidden"
                                 type="file"
                                 name="image"
@@ -130,7 +137,7 @@ const AddProductModal = ({
                             </label>
                           </div>
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="space-y-1 text-sm">
                         <textarea
@@ -153,7 +160,7 @@ const AddProductModal = ({
                           size={24}
                         />
                       ) : (
-                        'Save & Continue'
+                        "Save & Continue"
                       )}
                     </button>
                   </form>
@@ -164,7 +171,7 @@ const AddProductModal = ({
         </div>
       </Dialog>
     </Transition>
-  )
-}
+  );
+};
 
-export default AddProductModal
+export default AddProductModal;

@@ -1,11 +1,15 @@
+import { Helmet } from "react-helmet-async";
 import AuthInputBox from "../components/shared/AuthInputBox";
 
 
 const ContactUs = () => {
     return (
-        <div className="my-12 px-6">
+        <div className="p-10">
+          <Helmet>
+            <title>E-Shop | Contact Us</title>
+            </Helmet>
         <div data-aos="zoom-out-up" className=" max-w-3xl mx-auto text-center">
-          <h1 className="mb-2 text-2xl  text-green-600  font-bold">
+          <h1 className="mb-2 text-3xl  text-green-600  font-bold">
             Reach out to us!
           </h1>
           <p className="mb-3 text-lg leading-7 text-grey font-medium">
@@ -27,7 +31,7 @@ const ContactUs = () => {
                     adress
                   </h2>
                   <p className="text-lg   mt-2   text-grey font-light">
-                    685 Tangail,
+                    657 Tangail,
                   </p>
                   <p className="text-lg text-grey font-light">
                     Dhaka, Bangladesh
@@ -47,10 +51,10 @@ const ContactUs = () => {
                     Call US
                   </h2>
                   <p className="text-lg  mt-2 font-light  text-grey ">
-                    0183736633
+                   00958696
                   </p>
                   <p className="text-lg text-grey font-light">
-                    6463-222-22-8888-22
+                    69889-8757
                   </p>
                   <div className="card-actions justify-center"></div>
                 </div>

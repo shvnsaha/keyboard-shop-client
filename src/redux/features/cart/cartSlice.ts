@@ -77,6 +77,7 @@ const cartSlice = createSlice({
 
     deleteItem: (state, action: PayloadAction<TCartItem>) => {
       state.items = state.items.filter((item) => item._id !== action.payload._id);
+      state.count = state.count-1
     },
   },
 });

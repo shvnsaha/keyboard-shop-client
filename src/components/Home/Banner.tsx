@@ -1,31 +1,31 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Image1 from '../../assets/images/laptop.jpg'
-import Image2 from '../../assets/images/headphone.png'
-import Image3 from '../../assets/images/watch.png'
+import Image1 from '../../assets/images/keyboard.png'
+import Image2 from '../../assets/images/keyboard2.png'
+ import Image3 from '../../assets/images/keyboard3.png'
 
 const HeroData = [
     {
       id: 1,
-      img: Image2,
-      subtitle: "Beats Solo",
+      img: Image1,
+      subtitle: "Exclusive",
       title: "Wireless",
-      title2: "Headphone",
+      title2: "Keyboard",
     },
     {
       id: 2,
-      img: Image3,
-      subtitle: "Beats Solo",
-      title: "Wireless",
-      title2: "Virtual",
+      img: Image2,
+      subtitle: "Exclusive",
+      title: "Mechanical",
+      title2: "Keyboard",
     },
     {
       id: 3,
-      img: Image1,
-      subtitle: "Beats Solo",
+      img: Image3,
+      subtitle: "Exclusive",
       title: "Branded",
-      title2: "Laptops",
+      title2: "Combo",
     },
   ];
   
@@ -47,7 +47,7 @@ const Banner = () => {
         return (
                
               <div
-                className="overflow-hidden rounded-3xl min-h-[550px] sm:min-h-[650px] m-5 bg-slate-500 flex justify-center items-center
+                className="overflow-hidden rounded-3xl min-h-[550px] sm:min-h-[650px]  bg-slate-500 flex justify-center items-center
         "
               >
                 <div className="container pb-8 sm:pb-0">

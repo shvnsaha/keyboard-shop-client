@@ -25,6 +25,7 @@ const Cart = () => {
 
   const params = `id=${idsString}`;
   const { data, isLoading } = useGetProductsQuery(params);
+  
 
   if (isLoading) {
     return <Loader />;
@@ -40,8 +41,7 @@ const Cart = () => {
 
   // increase
   const handleIncrease = async (item: TCartItem) => {
-    console.log(item);
-    const product = data?.data.filter((it: TProduct) => it?._id === item?._id);
+    const product = data?.data?.result.filter((it: TProduct) => it?._id === item?._id);
     const matchProduct: TProduct = product[0];
     if (item?.quantity < matchProduct?.available_quantity) {
       dispatch(increaseCart(item));
@@ -183,7 +183,7 @@ const Cart = () => {
                         type="number"
                         value={item?.quantity}
                         onChange={() => console.log(item?.quantity)}
-                        className="w-10 mx-2 text-center overflow-hidden"
+                        className="w-10 mx-2 border border-blue-200 rounded-md text-center overflow-hidden"
                       ></input>
                       <button
                         className="btn btn-xs"
@@ -193,7 +193,7 @@ const Cart = () => {
                       </button>
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      <p className="text-gray-900 whitespace-no-wrap"></p>
+                      <p className="text-gray-900 whitespace-no-wrap">{item.quantity* item.price}</p>
                     </td>
 
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

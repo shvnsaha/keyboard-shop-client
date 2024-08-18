@@ -5,19 +5,31 @@ import CardSkeleton from "../components/shared/CardSkeleton";
 import Card from "../components/shared/Card";
 import { TProduct } from "../types";
 import { Helmet } from "react-helmet-async";
+import ScrollTop from "../hooks/useScrollToTop";
 
 const Product = () => {
+  ScrollTop()
   const [searchTerm, setSearchTerm] = useState("");
   const [sortPrice, setSortPrice] = useState("");
-  const [values, setValues] = useState([0, 1000]);
+  const [values, setValues] = useState([0, 10000]);
   const [page, setPage] = useState(1);
-  const limit = 3;
+  const limit = 6;
 
   const handleChange = (newValues: number[]) => {
     setValues(newValues);
   };
 
+ 
+  const handleClear = () =>{
+    setPage(1)
+    setValues([0,10000])
+    setSortPrice("")
+    setSearchTerm("")
+  }
+
   const params = `searchTerm=${searchTerm}&page=${page}&limit=${limit}&sort=${sortPrice}&min=${values[0]}&max=${values[1]}`;
+
+  
   const { data, isLoading, isSuccess } = useGetProductsQuery(params);
 
   const Pginetionclass =
@@ -28,7 +40,7 @@ const Product = () => {
       <Helmet>
         <title>E-Shop | Buy Your Products</title>
       </Helmet>
-      {/* banner */}
+
       <div
         className="banner h-52 bg-blend-overlay rounded-lg"
         data-aos="fade-down"
@@ -50,6 +62,7 @@ const Product = () => {
             id="search"
             type="text"
             placeholder="Search Here"
+            value={searchTerm}
             className="md:w-[30%] w-40 h-[50px] p-3 rounded-full border-2 border-[#DEDEDE]"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -66,6 +79,7 @@ const Product = () => {
             <h2 className="font-semibold text-2xl">Filter By:</h2>
           </div>
           <div className="flex flex-col md:flex-row gap-4">
+            <button onClick={handleClear} className="btn btn-outline">Clear Filter</button>
             <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
               <div className="flex gap-2 rounded-sm items-center">
                 <label className="text-lg font-semibold">Sort:</label>
@@ -90,7 +104,7 @@ const Product = () => {
                 value={values}
                 onChange={handleChange}
                 min={0}
-                max={1000}
+                max={10000}
                 className="w-52 h-0.5 bg-gray-200 rounded-lg relative"
                 thumbClassName="bg-blue-500 w-2 h-2 top-[-1px] rounded-full cursor-pointer absolute"
                 trackClassName={`bg-red-300 h-[5px] rounded-md`}

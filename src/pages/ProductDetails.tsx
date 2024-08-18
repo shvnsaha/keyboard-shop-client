@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import { useGetSingleProductQuery } from "../redux/features/product/productApi/getProducts";
 import Ratings from "../components/shared/Ratings";
 import Swal from "sweetalert2";
-import { useAppDispatch, useAppSelector } from "../redux/hook";
-import { addToCart, cartCount, selectCartItems } from "../redux/features/cart/cartSlice";
+import { useAppDispatch } from "../redux/hook";
+import { addToCart, cartCount } from "../redux/features/cart/cartSlice";
 import ScrollTop from "../hooks/useScrollToTop";
 import Loader from "../components/shared/Loader";
 
@@ -15,10 +15,9 @@ const ProductDetails = () => {
     ScrollTop()
     const dispatch = useAppDispatch();
     const { id } = useParams();
-    const { data, isLoading } = useGetSingleProductQuery(id);
+    const { data, isLoading  } = useGetSingleProductQuery(id);
 
-    // const cartItems = useAppSelector(selectCartItems);
-    // console.log(cartItems);
+    
 
     if(isLoading)
         return <Loader></Loader>
@@ -42,13 +41,13 @@ const ProductDetails = () => {
           Swal.fire({
             icon: "success",
             title: `${data.data.name} is added in cart`,
-            text: ``,
+            text: "",
           });
         } catch (error) {
           Swal.fire({
             icon: "error",
-            title: "Oops...",
-            text: "You've can't add this product to cart more than it's available quantity!",
+            title: "Oops..",
+            text: "You can't add product to cart more than it's available quantity!",
           });
         }
       };
@@ -89,18 +88,20 @@ const ProductDetails = () => {
 
 
                         <div className="lg:col-span-2 text-center lg:text-left space-y-3">
-                            <span className='text-violet-600 font-semibold'>{brand}</span>
+                            
                             <h1 className='text-xl md:text-3xl font-bold text-blue-500'>{name}</h1>
-                            <div className='flex gap-2 justify-center lg:justify-start items-center'>
+                            <span className='text-violet-600 font-semibold'>{brand}</span>
+                            <div className='flex gap-2 text-xs justify-center lg:justify-start items-center'>
                                 <Ratings rating={rating}></Ratings>
+                                <span>({rating})</span>
                                 {/* <p className='text-xs text-gray-400 cursor-pointer' onClick={() => showReview(_id)}>({ratingNumber} Customer Reviews)</p> */}
                             </div>
             
                             <p className='text-gray-700'>{description}</p>
                             <p>Available Quantity : {available_quantity}</p>
-                            <p>Price: {price} </p>
+                            <p>Price: {price} BDT</p>
                             <div>
-                                <button className='btn btn-outline bg-yellow-500' onClick={handleAddToCart}>Add To Cart</button>
+                                <button className='btn btn-outline text-white bg-blue-500' onClick={handleAddToCart}>Add To Cart</button>
                             </div>
 
                          
