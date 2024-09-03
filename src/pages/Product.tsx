@@ -30,7 +30,7 @@ const Product = () => {
   const params = `searchTerm=${searchTerm}&page=${page}&limit=${limit}&sort=${sortPrice}&min=${values[0]}&max=${values[1]}`;
 
   
-  const { data, isLoading, isSuccess } = useGetProductsQuery(params);
+  const { data, isLoading, isSuccess } = useGetProductsQuery(params,{refetchOnFocus:true});
 
   const Pginetionclass =
     "join-item  btn text-lg font-bold hover:bg-green-600 hover:text-white font-Montserrat bg-green-200";
@@ -121,8 +121,7 @@ const Product = () => {
       {isLoading ? (
         <div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 my-10"
-          data-aos="fade-down"
-          data-aos-delay="400"
+    
         >
           {Array.from({ length: 10 }, (_, index: number) => (
             <CardSkeleton key={index} />
@@ -131,8 +130,7 @@ const Product = () => {
       ) : data?.data?.result.length > 0 ? (
         <div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8 my-10"
-          data-aos="fade-down"
-          data-aos-delay="400"
+    
         >
           {data?.data?.result.map((product: TProduct) => (
             <Card key={product._id} product={product}></Card>

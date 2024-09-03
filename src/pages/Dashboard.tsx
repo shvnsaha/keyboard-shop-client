@@ -19,9 +19,11 @@ const Dashboard = () => {
   const [addProduct] = useAddProductMutation();
   const [updateProduct] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
+  const [page, setPage] = useState(1);
+  const limit =10
 
   const params = `page=1&limit=10`;
-  const { data, isLoading } = useGetProductsQuery(params);
+  const { data, isSuccess, isLoading } = useGetProductsQuery(params);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpen2, setIsOpen2] = useState(false);
@@ -160,6 +162,9 @@ const Dashboard = () => {
   if(isLoading)
     return <Loader></Loader>
 
+  const Pginetionclass =
+  "join-item  btn text-lg font-bold hover:bg-green-600 hover:text-white font-Montserrat bg-green-200";
+
   return (
     <div className="p-10 bg-gray-100 min-h-screen">
       <Helmet>
@@ -293,6 +298,42 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+      {isSuccess && (
+        <div className="paginetion flex mb-20">
+          <div className="join border-green-300 border mx-auto ">
+            <button
+              onClick={() => setPage((old) => old - 1)}
+              disabled={1 === page}
+              className={`${Pginetionclass} disabled:bg-green-100`}
+            >
+              «
+            </button>
+            {[...Array(Math.ceil(data?.data?.total / limit)).keys()].map(
+              (ele) => {
+                return (
+                  <button
+                    onClick={() => setPage(ele + 1)}
+                    key={ele + 1}
+                    className={`${Pginetionclass} ${ele + 1 === page ? "bg-yellow-300" : ""
+                      } `}
+                  >
+                    {ele + 1}
+                  </button>
+                );
+              }
+            )}
+
+            <button
+              onClick={() => setPage((old) => old + 1)}
+              disabled={page === Math.ceil(data?.data?.total / limit)}
+              className={`${Pginetionclass} disabled:bg-green-100`}
+            >
+              »
+            </button>
+          </div>
+        </div>
+      )}
 
       {
         <AddProductModal
